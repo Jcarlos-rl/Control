@@ -158,13 +158,9 @@ class _LoginPageState extends State<LoginPage> {
     if(info['ok']){
       Map user = await loginProvider.tipoUsuario(bloc.email);
 
-      print(user['perfil']);
+      Map perfil = await loginProvider.perfil(user['usuario'], user['id']);
 
-      if (user['perfil'] == false) {
-        Navigator.pushReplacementNamed(context, 'perfil');
-      }else{
-        Navigator.pushReplacementNamed(context, 'nav');
-      }
+      print(perfil['perfil']);
     }else{
       mostrarAlerta(context, info['mensaje']);
     }

@@ -61,26 +61,27 @@ class LoginProvider{
     final resp = await http.get(url);
     Map<String, dynamic> decodeData = json.decode(resp.body);
 
-    if(decodeData.isEmpty){
+    if(decodeData.length==1){
+      //print(decodeData);
+      final preid = decodeData.keys.toString();
+      final id = preid.replaceAll("(", "").replaceAll(")", "");
+      return{"usuario":"profesor","id":id};
+    }else{
       final url = '$_url/usuario/alumno.json?orderBy="correo"&equalTo="$email"';
       final resp = await http.get(url);
-      Map<String, dynamic> decodeDataAlumno = json.decode(resp.body);
-      final String id = decodeDataAlumno.keys.toString();
-      final String idnew = id.replaceAll("(", "").replaceAll(")", "");
-      
-      final urlid = '$_url/usuario/alumno/$idnew.json';
-      final respid = await http.get(urlid); 
-      Map<String, dynamic> decodePerfil = json.decode(respid.body);
-      return{"usuario":"alumno","perfil":decodePerfil['perfil']}; 
-    }else{
-      final String id = decodeData.keys.toString();
-      final String idnew = id.replaceAll("(", "").replaceAll(")", "");
-
-      final urlid = '$_url/usuario/profesor/$idnew.json';
-      final respid = await http.get(urlid); 
-      Map<String, dynamic> decodePerfil = json.decode(respid.body);
-
-      return{"usuario":"profesor","perfil":decodePerfil['perfil']};
+      Map<String, dynamic> decodeData = json.decode(resp.body);
+      //print(decodeData);
+      final preid = decodeData.keys.toString();
+      final id = preid.replaceAll("(", "").replaceAll(")", "");
+      return{"usuario":"alumno","id":id};
     }
+  }
+
+  Future<Map<String, dynamic>> perfil (String usuario, String id) async{
+    final url = '$_url/usuario/$usuario/$id.json';
+    final resp = await http.get(url);
+    Map<String, dynamic> decodeData = json.decode(resp.body);
+
+    return{"perfil":decodeData['perfil']};
   }
 }
