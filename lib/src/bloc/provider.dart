@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/src/bloc/login_bloc.dart';
+import 'package:project/src/bloc/perfil_bloc.dart';
 
 class Provider extends InheritedWidget {
   
@@ -17,6 +18,7 @@ class Provider extends InheritedWidget {
     : super(key: key, child: child);
 
   final loginBloc = LoginBloc();
+  final perfilBloc = PerfilBloc();
 
 
   @override 
@@ -24,6 +26,10 @@ class Provider extends InheritedWidget {
 
   static LoginBloc of (BuildContext context){
     return (context.inheritFromWidgetOfExactType(Provider) as Provider).loginBloc;
+  }
+
+  static PerfilBloc ofp (BuildContext context){
+    return (context.inheritFromWidgetOfExactType(Provider) as Provider).perfilBloc;
   }
 
 }

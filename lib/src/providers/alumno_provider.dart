@@ -13,4 +13,14 @@ class  AlumnoProvider {
     print(decodeData);
     return true;
   }
+
+  Future<Map<String, dynamic>> editarAlumno(AlumnoModel alumno,String id) async{
+    final url = '$_url/usuario/alumno/$id.json';
+    final resp = await http.put(url, body: alumnoModelToJson(alumno));
+
+    final decodeData = json.decode(resp.body);
+
+    print(decodeData);
+    return {'ok':true, "mensaje":"Registro realizado con exito"};
+  }
 }

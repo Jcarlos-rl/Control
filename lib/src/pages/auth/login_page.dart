@@ -17,7 +17,6 @@ class _LoginPageState extends State<LoginPage> {
   final loginProvider = new LoginProvider();
   AlumnoModel alumno = new AlumnoModel();
   ProfesorModel profesor = new ProfesorModel();
-  bool _profe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +159,11 @@ class _LoginPageState extends State<LoginPage> {
 
       Map perfil = await loginProvider.perfil(user['usuario'], user['id']);
 
-      print(perfil['perfil']);
+      if(perfil['perfil']==false){
+        Navigator.pushReplacementNamed(context, 'perfil');
+      }else{
+        Navigator.pushReplacementNamed(context, 'nav');
+      }
     }else{
       mostrarAlerta(context, info['mensaje']);
     }

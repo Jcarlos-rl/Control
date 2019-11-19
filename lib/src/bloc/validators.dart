@@ -34,4 +34,14 @@ class Validators {
       }
     }
   );
+
+  final validarNombre = StreamTransformer<String,String>.fromHandlers(
+    handleData: (nombre, sink){
+      if(nombre.length>=1){
+        sink.add(nombre);
+      }else{
+        sink.addError('El campo no debe de estar vacio');
+      }
+    }
+  );
 }
