@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
 
   _login(LoginBloc bloc, BuildContext context) async{
 
-    //print(_profe);
+    //print("sdfghjkj");
     Map info = await loginProvider.login(bloc.email, bloc.password);
 
     if(info['ok']){

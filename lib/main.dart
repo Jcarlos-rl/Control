@@ -1,5 +1,7 @@
 import 'package:project/src/bloc/provider.dart';
-import 'package:project/src/pages/app/home_page.dart';
+import 'package:project/src/pages/app/profesor/acciones_curso_page.dart';
+import 'package:project/src/pages/app/profesor/cursos_page.dart';
+import 'package:project/src/pages/app/profesor/edit_curso_page.dart';
 import 'package:project/src/pages/auth/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:project/src/pages/auth/perfil_page.dart';
@@ -25,12 +27,15 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Diseno',
-        initialRoute: prefs.ultimaPagina,
+        initialRoute: 'nav',
         routes: {
           'login' : (BuildContext context) => LoginPage(),
           'registro' : (BuildContext context) => RegistroPage(),
           'nav' : (BuildContext context) => BottomNavBar(),
-          'perfil' : (BuildContext context) => PerfilPage()       
+          'perfil' : (BuildContext context) => PerfilPage(),
+          'crearcurso' : (BuildContext context) => CrearCurso(),
+          'accionescurso' : (BuildContext context) => AccionescursoPage(),
+          'cursos' : (BuildContext context) => CursosPage(),      
         },
         theme: ThemeData(
           primaryColor: Color.fromRGBO(52, 54, 101, 1.0)
