@@ -59,12 +59,7 @@ class _AccionescursoPageState extends State<AccionescursoPage> {
             GestureDetector(
               child: _crearBoton(Colors.white, Icons.border_all,'Alumnos'),
               onTap: (){
-                Navigator.push(
-                  context, 
-                  MaterialPageRoute(
-                    //builder: (context)=>{},
-                  ),
-                );
+                Navigator.pushNamed(context, 'alumnos', arguments: materia);
               }
             ),
             GestureDetector(
