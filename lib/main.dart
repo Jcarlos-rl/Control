@@ -1,5 +1,6 @@
 import 'package:project/src/bloc/provider.dart';
 import 'package:project/src/pages/app/profesor/acciones_curso_page.dart';
+import 'package:project/src/pages/app/profesor/actividades_page.dart';
 import 'package:project/src/pages/app/profesor/alumnos_page.dart';
 import 'package:project/src/pages/app/profesor/cursos_page.dart';
 import 'package:project/src/pages/app/profesor/edit_curso_page.dart';
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
           'perfil' : (BuildContext context) => PerfilPage(),
           'crearcurso' : (BuildContext context) => CrearCurso(),
           'accionescurso' : (BuildContext context) => AccionescursoPage(),
-          'cursos' : (BuildContext context) => CursosPage(),  
+          'cursos' : (BuildContext context) => CursosPage(),
+          'actividades' : (BuildContext context) => ActividadesPage(),
           'alumnos' : (BuildContext context) => AlumnosPage()    
         },
         theme: ThemeData(

@@ -57,20 +57,15 @@ class _AccionescursoPageState extends State<AccionescursoPage> {
         TableRow(
           children: [
             GestureDetector(
-              child: _crearBoton(Colors.white, Icons.border_all,'Alumnos'),
+              child: _crearBoton(Colors.white, Icons.person,'Alumnos'),
               onTap: (){
                 Navigator.pushNamed(context, 'alumnos', arguments: materia);
               }
             ),
             GestureDetector(
-              child: _crearBoton(Colors.white, Icons.swap_calls,'Actividades'),
+              child: _crearBoton(Colors.white, Icons.list,'Actividades'),
               onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    //builder: (context)=>SecondPage()
-                  )
-                );
+                Navigator.pushNamed(context, 'actividades', arguments: materia);
               },
             ),
           ]
