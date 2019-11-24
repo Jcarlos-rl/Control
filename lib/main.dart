@@ -1,9 +1,12 @@
 import 'package:project/src/bloc/provider.dart';
-import 'package:project/src/pages/app/profesor/acciones_curso_page.dart';
-import 'package:project/src/pages/app/profesor/actividades_page.dart';
-import 'package:project/src/pages/app/profesor/alumnos_page.dart';
-import 'package:project/src/pages/app/profesor/cursos_page.dart';
-import 'package:project/src/pages/app/profesor/edit_curso_page.dart';
+import 'package:project/src/pages/app/profesor/actividades/actividades_page.dart';
+import 'package:project/src/pages/app/profesor/actividades/evaluar_actividad_page.dart';
+import 'package:project/src/pages/app/profesor/actividades/evaluar_alumno_page.dart';
+import 'package:project/src/pages/app/profesor/alumnos/alumnos_page.dart';
+import 'package:project/src/pages/app/profesor/criterios/criterios_page.dart';
+import 'package:project/src/pages/app/profesor/cursos/acciones_curso_page.dart';
+import 'package:project/src/pages/app/profesor/cursos/cursos_page.dart';
+import 'package:project/src/pages/app/profesor/cursos/edit_curso_page.dart';
 import 'package:project/src/pages/auth/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:project/src/pages/auth/perfil_page.dart';
@@ -39,6 +42,9 @@ class MyApp extends StatelessWidget {
           'accionescurso' : (BuildContext context) => AccionescursoPage(),
           'cursos' : (BuildContext context) => CursosPage(),
           'actividades' : (BuildContext context) => ActividadesPage(),
+          'evaluar' : (BuildContext context) => EvaluarPage(),
+          'evaluaralumno' : (BuildContext context) => EvaluarAlumnoPage(),
+          'criterios' : (BuildContext context) => CriteriosPage(),
           'alumnos' : (BuildContext context) => AlumnosPage()    
         },
         theme: ThemeData(

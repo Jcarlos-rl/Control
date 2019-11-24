@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:project/src/pages/app/home_page.dart';
-import 'package:project/src/pages/app/profesor/cursos_page.dart';
+import 'package:project/src/pages/app/profesor/cursos/cursos_page.dart';
+import 'package:project/src/pages/app/profesor/home_page.dart';
 class BottomNavBar extends StatefulWidget {
   @override
   _BottomNavBarState createState() => _BottomNavBarState();

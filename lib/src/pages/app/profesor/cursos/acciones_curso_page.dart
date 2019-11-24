@@ -72,13 +72,23 @@ class _AccionescursoPageState extends State<AccionescursoPage> {
         ),
         TableRow(
           children: [
-            _crearBoton(Colors.white, Icons.edit,'Criterios'),
+            GestureDetector(
+              child: _crearBoton(Colors.white, Icons.edit,'Criterios'),
+              onTap: (){
+                Navigator.popAndPushNamed(context, 'criterios', arguments: materia);
+              },
+            ),  
             _crearBoton(Colors.white, Icons.face,'Pase lista')
           ]
         ),
         TableRow(
           children: [
-            _crearBoton(Colors.white, Icons.featured_play_list,'Evaluar actividades'),
+            GestureDetector(
+              child: _crearBoton(Colors.white, Icons.featured_play_list,'Evaluar actividades'),
+              onTap: (){
+                Navigator.pushNamed(context, 'evaluar', arguments: materia);
+              },
+            ),
             _crearBoton(Colors.white, Icons.featured_play_list,'Foro')
           ]
         ),

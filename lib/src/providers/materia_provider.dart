@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:project/src/models/actividades_model.dart';
 import 'package:project/src/models/amateria_model.dart';
+import 'package:project/src/models/criterios_model.dart';
 import 'dart:convert';
 import 'package:project/src/models/materias_model.dart';
 
@@ -155,5 +156,59 @@ class MateriaProvider{
     return 1;
   }
 
+  //-------------------- Criterios
+
+  Future<bool> crearCriterio(CriteriosModel criterio,String idmat) async{
+
+    final url = '$_url/materias/$idmat/criterios.json';
+
+    final resp = await http.post(url, body: criteriosModelToJson(criterio));
+
+    final decodeData = json.decode(resp.body);
+
+    print(decodeData);
+
+    return true;
+  }
+
+  Future<bool> editarCriterio(CriteriosModel criterio,String idMat) async{
+    final url = '$_url/materias/$idMat/criterios/${ criterio.id }.json';
+
+    final resp = await http.put(url, body: criteriosModelToJson(criterio));
+
+    final decodeData = json.decode(resp.body);
+
+    print(decodeData);
+    return true;
+  }
+
+  Future<List<CriteriosModel>> cargarCriterios(String id) async{
+    final url = '$_url/materias/$id/criterios.json';
+    final resp = await http.get(url);
+
+    final  Map<String, dynamic> decodeData = json.decode(resp.body);
+    final List<CriteriosModel> criterios = new List();
+
+    if(decodeData == null) return [];
+
+    decodeData.forEach((id, mat){
+      final criTemp = CriteriosModel.fromJson(mat);
+      criTemp.id = id;
+
+      //print(alumTemp.matricula);
+
+      criterios.add(criTemp);
+    });
+
+    return criterios;
+  }
+
+  Future<int> borrarCriterio(String idMat, String id) async{
+    final url = '$_url/materias/$idMat/criterios/$id.json';
+    final resp = await http.delete(url);
+
+    print(json.decode(resp.body));
+    return 1;
+  }
 
  }
