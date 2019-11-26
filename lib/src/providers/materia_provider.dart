@@ -1,7 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'package:project/src/models/actividades_model.dart';
 import 'package:project/src/models/amateria_model.dart';
+import 'package:project/src/models/asistencia_model.dart';
 import 'package:project/src/models/criterios_model.dart';
+import 'package:project/src/models/foro_model.dart';
 import 'dart:convert';
 import 'package:project/src/models/materias_model.dart';
 
@@ -68,8 +70,55 @@ class MateriaProvider{
 
     final decodeData = json.decode(resp.body);
 
+    final idMat = decodeData['name'];
+    amateria.id = idMat;
+    amateria.idmateria = id;
+    crearAlumno(amateria);
+    return true;
+  }
+
+  Future<bool> crearAlumno(AmateriaModel amateria) async{
+    //amateria.id = idMat;
+    final url = '$_url/alumnos.json';
+
+    final resp = await http.post(url, body: amateriaModelToJson(amateria));
+
+    final decodeData = json.decode(resp.body);
+
     print(decodeData);
     return true;
+  }
+
+  Future<int> borrarAlumno(String idMat, String id) async{
+    final url = '$_url/materias/$idMat/alumnos/$id.json';
+    final resp = await http.delete(url);
+
+    buscar(id);
+
+    print(json.decode(resp.body));
+    return 1;
+  }
+
+  Future<Map<String, dynamic>> buscar(String id) async{
+    final url = '$_url/alumnos.json?orderBy="id"&equalTo="$id"';
+    final resp = await http.get(url);
+
+    Map<String, dynamic> decodeData = json.decode(resp.body);
+
+    final preid = decodeData.keys.toString();
+    final id2 = preid.replaceAll("(", "").replaceAll(")", "");
+
+    borrarAlumno2(id2);
+  }
+
+  Future<int> borrarAlumno2(String id) async{
+    final url = '$_url/alumnos/$id.json';
+    final resp = await http.delete(url);
+
+    //print(url);
+
+    print(json.decode(resp.body));
+    return 1;
   }
 
   Future<List<AmateriaModel>> cargarAlumnos(String id) async{
@@ -91,14 +140,6 @@ class MateriaProvider{
     });
 
     return alumnos;
-  }
-
-  Future<int> borrarAlumno(String idMat, String id) async{
-    final url = '$_url/materias/$idMat/alumnos/$id.json';
-    final resp = await http.delete(url);
-
-    print(json.decode(resp.body));
-    return 1;
   }
 
   //-------------------- Actividades
@@ -156,6 +197,19 @@ class MateriaProvider{
     return 1;
   }
 
+  Future<bool> crearCalificacionActividad(ActividadesModel actividad,String idmat, String id) async{
+
+    final url = '$_url/materias/$idmat/alumnos/$id/actividades.json';
+
+    final resp = await http.post(url, body: actividadesModelToJson(actividad));
+
+    final decodeData = json.decode(resp.body);
+
+    print(decodeData);
+
+    return true;
+  }
+
   //-------------------- Criterios
 
   Future<bool> crearCriterio(CriteriosModel criterio,String idmat) async{
@@ -209,6 +263,59 @@ class MateriaProvider{
 
     print(json.decode(resp.body));
     return 1;
+  }
+
+  //-------------------- Lista
+
+  Future<bool> crearAsistencia(AmateriaModel alumno) async{
+
+    final date = new DateTime.now();
+    final dateNow = new DateTime(date.year, date.month, date.day);
+    print(dateNow);
+
+    /*final url = '$_url/materias/$idmat/criterios.json';
+
+    final resp = await http.post(url, body: criteriosModelToJson(criterio));
+
+    final decodeData = json.decode(resp.body);
+
+    print(decodeData);
+
+    return true;*/
+  }
+
+  //--------------------Foro
+
+  Future<bool> crearMensaje(ForoModel foro, String id) async{
+    final url = '$_url/materias/$id/foro.json';
+
+    final resp = await http.post(url, body: foroModelToJson(foro));
+
+    final decodeData = json.decode(resp.body);
+
+    print(decodeData);
+    return true;
+  }
+
+  Future<List<ForoModel>> cargarMensajes(String id) async{
+    final url = '$_url/materias/$id/foro.json';
+    final resp = await http.get(url);
+
+    final  Map<String, dynamic> decodeData = json.decode(resp.body);
+    final List<ForoModel> mensajes = new List();
+
+    if(decodeData == null) return [];
+
+    decodeData.forEach((id, mat){
+      final menTemp = ForoModel.fromJson(mat);
+      menTemp.id = id;
+
+      //print(alumTemp.matricula);
+
+      mensajes.add(menTemp);
+    });
+
+    return mensajes;
   }
 
  }

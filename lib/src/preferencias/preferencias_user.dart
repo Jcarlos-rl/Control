@@ -49,6 +49,22 @@ class PreferenciasUsuario{
     _prefs.setString('email', value);
   }
 
+  //Get y set de la matricula
+  get matricula{
+    return _prefs.getString('matricula') ?? '';
+  }
+  set matricula(String value){
+    _prefs.setString('matricula', value);
+  }
+
+  //Get y set de la ultima materia
+  get tempMat{
+    return _prefs.getString('tempMat') ?? '';
+  }
+
+  set tempMat(String value){
+    _prefs.setString('tempMat', value);
+  }
 
   //Get y set de la ultima pagina
   get ultimaPagina{
@@ -58,4 +74,5 @@ class PreferenciasUsuario{
   set ultimaPagina(String value){
     _prefs.setString('ultimaPagina', value);
   }
+
 }

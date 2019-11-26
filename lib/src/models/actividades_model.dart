@@ -9,7 +9,7 @@ class ActividadesModel {
   String nombre;
   String descripcion;
   String fechaentrega;
-  int calificacion;
+  String calificacion;
   String observaciones;
 
   ActividadesModel({

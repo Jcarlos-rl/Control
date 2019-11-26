@@ -5,21 +5,25 @@ AmateriaModel amateriaModelFromJson(String str) => AmateriaModel.fromJson(json.d
 String amateriaModelToJson(AmateriaModel data) => json.encode(data.toJson());
 
 class AmateriaModel {
-    String id;
-    String matricula;
+  String id;
+  String matricula;
+  String idmateria;
 
-    AmateriaModel({
-        this.id,
-        this.matricula,
-    });
+  AmateriaModel({
+    this.id,
+    this.matricula,
+    this.idmateria,
+  });
 
-    factory AmateriaModel.fromJson(Map<String, dynamic> json) => AmateriaModel(
-        id: json["id"],
-        matricula: json["matricula"],
-    );
+  factory AmateriaModel.fromJson(Map<String, dynamic> json) => AmateriaModel(
+    id: json["id"],
+    matricula: json["matricula"],
+    idmateria: json["idmateria"],
+  );
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "matricula": matricula,
-    };
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "matricula": matricula,
+    "idmateria": idmateria,
+  };
 }

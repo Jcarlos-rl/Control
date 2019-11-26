@@ -4,6 +4,7 @@ import 'package:project/src/bloc/provider.dart';
 import 'package:project/src/models/alumno_model.dart';
 import 'package:project/src/models/profesor_model.dart';
 import 'package:project/src/pages/layout/fondo_app.dart';
+import 'package:project/src/preferencias/preferencias_user.dart';
 import 'package:project/src/providers/login_provider.dart';
 import 'package:project/src/utils/utils.dart';
 
@@ -17,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   final loginProvider = new LoginProvider();
   AlumnoModel alumno = new AlumnoModel();
   ProfesorModel profesor = new ProfesorModel();
+
+  final _prefs= new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +165,11 @@ class _LoginPageState extends State<LoginPage> {
       if(perfil['perfil']==false){
         Navigator.pushReplacementNamed(context, 'perfil');
       }else{
-        Navigator.pushReplacementNamed(context, 'nav');
+        if(_prefs.usuario == "profesor"){
+          Navigator.pushReplacementNamed(context, 'nav');
+        }else{
+          Navigator.pushReplacementNamed(context, 'navA');
+        }
       }
     }else{
       mostrarAlerta(context, info['mensaje']);

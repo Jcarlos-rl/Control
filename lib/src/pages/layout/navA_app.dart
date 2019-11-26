@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:project/src/pages/app/profesor/cursos/cursos_page.dart';
+import 'package:project/src/pages/app/alumno/home_page.dart';
+import 'package:project/src/pages/app/alumno/materias_alumno_page.dart';
 import 'package:project/src/pages/app/profesor/home_page.dart';
-import 'package:project/src/pages/notificaciones/notificaciones.dart';
-class BottomNavBar extends StatefulWidget {
+
+class BottomNavBarA extends StatefulWidget {
   @override
-  _BottomNavBarState createState() => _BottomNavBarState();
+  _BottomNavBarAState createState() => _BottomNavBarAState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
+class _BottomNavBarAState extends State<BottomNavBarA> {
 
   int _pageindex=0;
 
-  final HomePage _homePage = HomePage();
-  final CursosPage _cursoPage = CursosPage();
-  final NotificacionesPage _notificacionesPage = NotificacionesPage();
+  final HomePageA _homePageA = HomePageA();
+  final MateriasAlumnoPage _cursoPageA = MateriasAlumnoPage();
 
   Widget _showPage = new HomePage();
 
   Widget _pageChooser(int page){
     switch(page){
       case 0:
-        return _homePage;
+        return _homePageA;
         break;
       case 1:
-       return _cursoPage;
+       return _cursoPageA;
        break;
-      case 2:
+      /*case 2:
        return _notificacionesPage;
        break;
-      /*case 3:
+      case 3:
        return _cerrarSesion;
        break;
       case 4:

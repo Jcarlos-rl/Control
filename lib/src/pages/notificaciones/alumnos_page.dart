@@ -1,38 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:project/src/models/actividades_model.dart';
 import 'package:project/src/models/amateria_model.dart';
-import 'package:project/src/preferencias/preferencias_user.dart';
-import 'package:project/src/providers/materia_provider.dart';
+import 'package:project/src/models/materias_model.dart';
+import 'package:project/src/models/notificaciones_model.dart';
+import 'package:project/src/providers/notificaciones_provider.dart';
 
-class EvaluarAlumnoPage extends StatelessWidget {
+class NotificacionAlumnoPage extends StatelessWidget {
 
-  final alumnoProvider = new MateriaProvider();
+  final notificacionProvider = new NotificacionesProvider();
+  NotificacionesModel notificacion = new NotificacionesModel();
+  MateriasModel materia = new MateriasModel();
   AmateriaModel alumno = new AmateriaModel();
-  ActividadesModel actividad = new ActividadesModel();
   final _formKey = GlobalKey<FormState>();
-  final _prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
 
-    final actData = ModalRoute.of(context).settings.arguments;
+    final MateriasModel matData = ModalRoute.of(context).settings.arguments;
 
-    if(actData != null){
-      actividad = actData;
+    if(matData != null){
+      materia = matData;
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Evaluar alumnos'),
+        title: Text('Alumnos '+materia.nombre),
       ),
       body: _crearLista(),
-      //floatingActionButton: _crearBoton(context),
     );
   }
 
   Widget _crearLista(){
     return FutureBuilder(
-      future: alumnoProvider.cargarAlumnos(_prefs.tempMat),
+      future: notificacionProvider.cargarAlumnos(materia.id),
       builder: (BuildContext context, AsyncSnapshot<List<AmateriaModel >> snapshot){
         if(snapshot.hasData){
           final alumnos = snapshot.data;
@@ -53,10 +52,10 @@ class EvaluarAlumnoPage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            title: Text('${alumno.matricula}'),
-            subtitle: Text(alumno.id),
+              title: Text('${alumno.matricula}'),
+              subtitle: Text(alumno.id),
             onTap: (){
-              _newCalificacion(context, actividad,alumno);
+              _newNotificacion(context, alumno);
             },
           ),
         ],
@@ -64,23 +63,23 @@ class EvaluarAlumnoPage extends StatelessWidget {
     );
   }
 
-  Future<void> _newCalificacion(BuildContext context, ActividadesModel actividad, AmateriaModel alumno) async {
+  Future<void> _newNotificacion(BuildContext context, AmateriaModel alumno) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog( 
-          title: Text("Asignar Calificación"),
+          title: Text("Nueva Notificación"),
           content: Container(
             height: 250.0,
             child: Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  _crearCalificacion(actividad),
+                  _crearNombre(notificacion),
                   SizedBox(height: 10.0),
-                  _crearComentario(actividad),
+                  _crearDescripcion(notificacion),
                   SizedBox(height: 30.0),
-                  _guardarActividad(context, actividad, alumno)
+                  _guardarActividad(context, alumno)
                 ],
               ),
             ),
@@ -90,37 +89,17 @@ class EvaluarAlumnoPage extends StatelessWidget {
     );
   }
 
-  Widget _crearCalificacion(ActividadesModel actividad){
+  Widget _crearNombre(NotificacionesModel notificacion){
     return TextFormField(
-      initialValue: actividad.calificacion,
       textCapitalization: TextCapitalization.sentences,
       cursorColor: Color.fromRGBO(52, 54, 101, 1.0),
       decoration: InputDecoration(
-        labelText: 'Calificación'
+        labelText: 'Titulo notificación'
       ),
-      onSaved: (value) => actividad.calificacion = value,
-      validator: (value){
-        if (value.length<0) {
-          return 'Ingrese la calificación';
-        } else {
-          return null;
-        }
-      }
-    );
-  }
-
-  Widget _crearComentario(ActividadesModel actividad){
-    return TextFormField(
-      initialValue: actividad.observaciones,
-      textCapitalization: TextCapitalization.sentences,
-      cursorColor: Color.fromRGBO(52, 54, 101, 1.0),
-      decoration: InputDecoration(
-        labelText: 'Observacion'
-      ),
-      onSaved: (value) => actividad.observaciones = value,
+      onSaved: (value) => notificacion.nombre = value,
       validator: (value){
         if (value.length<3) {
-          return 'Ingrese la observación';
+          return 'Ingrese el titulo de la notificacion';
         } else {
           return null;
         }
@@ -128,7 +107,26 @@ class EvaluarAlumnoPage extends StatelessWidget {
     );
   }
 
-  Widget _guardarActividad(BuildContext context, ActividadesModel actividad, AmateriaModel alumno){
+  Widget _crearDescripcion(NotificacionesModel notificacion){
+    return TextFormField(
+      //initialValue: actividad.descripcion,
+      textCapitalization: TextCapitalization.sentences,
+      cursorColor: Color.fromRGBO(52, 54, 101, 1.0),
+      decoration: InputDecoration(
+        labelText: 'Mensaje'
+      ),
+      onSaved: (value) => notificacion.mensaje = value,
+      validator: (value){
+        if (value.length<3) {
+          return 'Ingrese el mensaje';
+        } else {
+          return null;
+        }
+      }
+    );
+  }
+
+  Widget _guardarActividad(BuildContext context, AmateriaModel alumno){
     return RaisedButton.icon(
       label: Text('Guardar'),
       shape: RoundedRectangleBorder(
@@ -138,18 +136,21 @@ class EvaluarAlumnoPage extends StatelessWidget {
       textColor: Colors.white,
       icon: Icon(Icons.save),
       onPressed: (){
-        _submit(context, actividad, alumno);
+        _submit(context, alumno);
       },
     );
   }
 
-  void _submit(BuildContext context, ActividadesModel actividad, AmateriaModel alumno)async{
+  void _submit(BuildContext context, AmateriaModel alumno)async{
 
     if(!_formKey.currentState.validate()) return ;
 
     _formKey.currentState.save();
 
-    alumnoProvider.crearCalificacionActividad(actividad, _prefs.tempMat, alumno.id);
-  }
+    notificacionProvider.crearNotificacionAlumno(notificacion, materia.id, alumno.id);
 
+    print(alumno.id);
+
+    Navigator.of(context).pop();
+  }
 }

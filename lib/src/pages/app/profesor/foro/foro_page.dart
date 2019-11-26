@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:project/src/models/amateria_model.dart';
+import 'package:project/src/models/foro_model.dart';
 import 'package:project/src/models/materias_model.dart';
+import 'package:project/src/preferencias/preferencias_user.dart';
 import 'package:project/src/providers/materia_provider.dart';
 
-class AlumnosPage extends StatelessWidget {
+class ForoPage extends StatelessWidget {
 
   final alumnoProvider = new MateriaProvider();
   MateriasModel materia = new MateriasModel();
-  AmateriaModel alumno = new AmateriaModel();
+  ForoModel foro = new ForoModel();
   final _formKey = GlobalKey<FormState>();
+  final _prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class AlumnosPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Alumnos '+materia.nombre),
+        title: Text('Foro '+materia.nombre),
       ),
       body: _crearLista(),
       floatingActionButton: _crearBoton(context),
@@ -30,23 +32,23 @@ class AlumnosPage extends StatelessWidget {
 
   _crearBoton(BuildContext context){
     return FloatingActionButton(
-      child: Icon(Icons.add),
+      child: Icon(Icons.message),
       backgroundColor: Color.fromRGBO(52, 54, 101, 1.0 ),
       onPressed:(){
-        _newAlumno(context);
+        _newMensaje(context);
       } /*()=>Navigator.pushNamed(context, 'crearcurso')*/,
     );
   }
 
   Widget _crearLista(){
     return FutureBuilder(
-      future: alumnoProvider.cargarAlumnos(materia.id),
-      builder: (BuildContext context, AsyncSnapshot<List<AmateriaModel >> snapshot){
+      future: alumnoProvider.cargarMensajes(materia.id),
+      builder: (BuildContext context, AsyncSnapshot<List<ForoModel >> snapshot){
         if(snapshot.hasData){
-          final alumnos = snapshot.data;
+          final mensajes = snapshot.data;
           return ListView.builder(
-            itemCount: alumnos.length,
-            itemBuilder: (context, i)=>_crearItem(context, alumnos[i]), 
+            itemCount: mensajes.length,
+            itemBuilder: (context, i)=>_crearItem(context, mensajes[i]), 
           );
         }else{
           return Center(child: CircularProgressIndicator());
@@ -56,43 +58,37 @@ class AlumnosPage extends StatelessWidget {
     );
   }
 
-  Widget _crearItem(BuildContext context,AmateriaModel alumno){
-    return Dismissible(
-      key: UniqueKey(),
-      background: Container(color: Colors.red ),
-      onDismissed: (direccion){
-        alumnoProvider.borrarAlumno(materia.id,alumno.id);
-      },
-      child: Card(
-        child: Column(
-          children: <Widget>[
-            ListTile(
-                title: Text('${alumno.matricula}'),
-                subtitle: Text(alumno.id),
-              //onTap: ()=>Navigator.pushNamed(context, 'accionescurso', arguments: materia),
-            ),
-          ],
-        ),
-      )
+  Widget _crearItem(BuildContext context,ForoModel mensaje){
+    return Card(
+      child: Column(
+        children: <Widget>[
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('${_prefs.usuario}'),
+            subtitle: Text(mensaje.hora),
+            trailing: Text(mensaje.mensaje)
+          ),
+        ],
+      ),
     );
   }
 
 
-  Future<void> _newAlumno(BuildContext context) async {
+  Future<void> _newMensaje(BuildContext context) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog( 
-          title: Text("Nuevo alumno"),
+          title: Text("Nuevo mensaje"),
           content: Container(
             height: 165.0,
             child: Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
-                  _crearMatricula(),
+                  _crearMensaje(),
                   SizedBox(height: 30.0),
-                  _guardarAlumno(context)
+                  _guardarMensaje(context)
                 ],
               ),
             ),
@@ -102,18 +98,18 @@ class AlumnosPage extends StatelessWidget {
     );
   }
 
-  Widget _crearMatricula(){
+  Widget _crearMensaje(){
     return TextFormField(
-      initialValue: alumno.matricula,
+      initialValue: foro.mensaje,
       textCapitalization: TextCapitalization.sentences,
       cursorColor: Color.fromRGBO(52, 54, 101, 1.0),
       decoration: InputDecoration(
-        labelText: 'Matricula'
+        labelText: 'Mensaje'
       ),
-      onSaved: (value) => alumno.matricula = value,
+      onSaved: (value) => foro.mensaje = value,
       validator: (value){
         if (value.length<3) {
-          return 'Ingrese la matricula del alumno';
+          return 'Ingrese tu mensaje';
         } else {
           return null;
         }
@@ -121,7 +117,7 @@ class AlumnosPage extends StatelessWidget {
     );
   }
 
-  Widget _guardarAlumno(BuildContext context){
+  Widget _guardarMensaje(BuildContext context){
     return RaisedButton.icon(
       label: Text('Guardar'),
       shape: RoundedRectangleBorder(
@@ -142,7 +138,13 @@ class AlumnosPage extends StatelessWidget {
 
     _formKey.currentState.save();
 
-    alumnoProvider.crearAlumnoenMateria(alumno, materia.id);
+    final date = DateTime.now();
+
+    foro.usuario = _prefs.matricula;
+    foro.tipo = _prefs.usuario;
+    foro.hora = date.toString();
+
+    alumnoProvider.crearMensaje(foro, materia.id);
 
     Navigator.of(context).pop();
   }

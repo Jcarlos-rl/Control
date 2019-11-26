@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:project/src/models/actividades_model.dart';
 import 'package:project/src/models/materias_model.dart';
+import 'package:project/src/preferencias/preferencias_user.dart';
 import 'package:project/src/providers/materia_provider.dart';
 
 class EvaluarPage extends StatelessWidget {
 
- final actividadProvider = new MateriaProvider();
+  final actividadProvider = new MateriaProvider();
   MateriasModel materia = new MateriasModel();
   ActividadesModel actividad = new ActividadesModel();
+  final _prefs = new PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,11 @@ class EvaluarPage extends StatelessWidget {
           ListTile(
             title: Text('${actividad.nombre}'),
             subtitle: Text(actividad.id),
-            onTap: ()=>Navigator.pushNamed(context, 'evaluaralumno', arguments: [materia , actividad] ),
+            onTap: (){
+              _prefs.tempMat = materia.id;
+              Navigator.pushNamed(context, 'evaluaralumno', arguments: actividad);
+              print(_prefs.tempMat);
+            },
           ),
         ],
       ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project/src/models/actividades_model.dart';
 import 'package:project/src/models/criterios_model.dart';
 import 'package:project/src/models/materias_model.dart';
 import 'package:project/src/providers/materia_provider.dart';

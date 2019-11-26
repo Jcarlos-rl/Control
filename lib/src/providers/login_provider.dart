@@ -107,6 +107,8 @@ class LoginProvider{
     final resp = await http.get(url);
     Map<String, dynamic> decodeData = json.decode(resp.body);
 
+    _prefs.matricula = decodeData['matricula'];
+
     return{"perfil":decodeData['perfil']};
   }
 }
